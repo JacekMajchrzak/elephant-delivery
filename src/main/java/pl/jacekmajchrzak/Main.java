@@ -1,7 +1,9 @@
 package pl.jacekmajchrzak;
 
 import io.javalin.Javalin;
-import io.javalin.core.util.FileUtil;
+import pl.jacekmajchrzak.features.STATE;
+import pl.jacekmajchrzak.features.TurnFeatureRequest;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +14,11 @@ public class Main {
         put("saturday", "No reservation");
         put("sunday", "No reservation");
     }};
+    
+    static Map<String, STATE> features = new HashMap<String, STATE>() {{
+        put("EXAMPLE", STATE.ON);
+        put("EXAMPLE2", STATE.ON);
+    }};
 
     public static void main(String[] args) {
 
@@ -20,20 +27,19 @@ public class Main {
             .enableStaticFiles("/public")
             .start();
 
-        app.post("/make-reservation", ctx -> {
+        app.post("/post-form", ctx -> {
             reservations.put(ctx.formParam("day"), ctx.formParam("time"));
             ctx.html("Your reservation has been saved");
         });
-
-        app.get("/check-reservation", ctx -> {
-            ctx.html(reservations.get(ctx.queryParam("day")));
+    
+        app.get("/features", ctx -> {
+            ctx.json(features);
         });
-
-        app.post("/upload-example", ctx -> {
-            ctx.uploadedFiles("files").forEach(file -> {
-                FileUtil.streamToFile(file.getContent(), "upload/" + file.getName());
-                ctx.html("Upload successful");
-            });
+        
+        app.post("/features/:key", ctx -> {
+            TurnFeatureRequest turnFeatureRequest = ctx.bodyAsClass(TurnFeatureRequest.class);
+            String featureToChange = ctx.pathParam("key");
+            features.replace(featureToChange, turnFeatureRequest.getTurnToState());
         });
 
     }

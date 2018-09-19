@@ -1,7 +1,6 @@
-<h1>Reserve a table at our fancy restaurant</h1>
+<h1>Hello in Elephant Delivery Exercise!</h1>
 
-<h2>Make reservation:</h2>
-<form method="post" action="/make-reservation">
+<form id="form-example" method="post" action="/post-form">
     Choose day
     <select name="day">
         <option value="saturday">Saturday</option>
@@ -14,25 +13,6 @@
         <option value="9:00 PM">9:00 PM</option>
     </select>
     <br>
-    <button>Submit</button>
-</form>
-
-
-<h2>Check your reservation:</h2>
-<form method="get" action="/check-reservation">
-    Choose day
-    <select name="day">
-        <option value="saturday">Saturday</option>
-        <option value="sunday">Sunday</option>
-    </select>
-    <br>
-    <button>Submit</button>
-</form>
-
-
-<h1>Upload example</h1>
-<form method="post" action="/upload-example" enctype="multipart/form-data">
-    <input type="file" name="files" multiple>
     <button>Submit</button>
 </form>
 
@@ -52,3 +32,24 @@
         margin-bottom: 5px;
     }
 </style>
+
+<script>
+    window.addEventListener('load', function () {
+        var url  = "http://localhost:7070/features";
+        var xhr  = new XMLHttpRequest()
+        xhr.open('GET', url, true)
+        xhr.onload = function () {
+            var features = JSON.parse(xhr.responseText);
+            if (xhr.readyState == 4 && xhr.status == "200") {
+                console.table(features);
+            } else {
+                console.error(features);
+            }
+            if(features["EXAMPLE"] === "OFF"){
+                var formExample = document.getElementById("form-example");
+                formExample.hidden=true;
+            }
+        }
+        xhr.send(null);
+    });
+</script>

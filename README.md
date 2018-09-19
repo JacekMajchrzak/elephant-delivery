@@ -54,3 +54,7 @@ CA          | 8.25%
 1. mvn clean install
 2. java -jar target/elephant-delivery-1.0-SNAPSHOT-jar-with-dependencies.jar
 3. Go to your browser and open localhost:7070
+
+### Turn off and turn on feature switch
+curl -X POST localhost:7070/features/EXAMPLE -d '{"turnToState":"ON"}'
+curl -X GET localhost:7070/features
