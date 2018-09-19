@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+
+  elephant-delivery:
+    image: "jacekmajchrzak/elephant-delivery:${TAG}"
+    networks:
+    - elephant
+    ports:
+    - "80:7070"
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+
+networks:
+  elephant:
+    external: true
