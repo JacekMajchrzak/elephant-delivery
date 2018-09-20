@@ -58,3 +58,7 @@ CA          | 8.25%
 ### Turn off and turn on feature switch
 curl -X POST localhost:7070/features/EXAMPLE -d '{"turnToState":"ON"}'
 curl -X GET localhost:7070/features
+
+### Used framework and tips
+On the backend side there is simplistic framework Javalin: https://javalin.io/documentation
+On the frontend side there is no framework, you can find examples of simple forms and how its handled on backend
