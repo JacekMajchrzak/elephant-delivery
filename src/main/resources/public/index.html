@@ -27,6 +27,10 @@
         margin: 5px 0;
     }
 
+    #form-example {
+        display: none;
+    }
+
     h1, h2, h3 {
         margin-top: 1.5em;
         margin-bottom: 5px;
@@ -45,9 +49,9 @@
             } else {
                 console.error(features);
             }
-            if(features["EXAMPLE"] === "OFF"){
+            if(features["EXAMPLE"] === "ON"){
                 var formExample = document.getElementById("form-example");
-                formExample.hidden=true;
+                formExample.style.display = 'block';
             }
         }
         xhr.send(null);

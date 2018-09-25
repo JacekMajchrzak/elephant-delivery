@@ -11,7 +11,7 @@
 
 ### How we will work?
 
-- Hardcode ATDD: https://dzone.com/articles/acceptance-test-driven-development-closing-the-com
+- Hardcore ATDD: https://dzone.com/articles/acceptance-test-driven-development-closing-the-com
 - Pair-programming (switch driver and pilot roles every sprint)
 - Before starting to code do solution review with member of other team
 - Before commiting code ask member of other team for code review
