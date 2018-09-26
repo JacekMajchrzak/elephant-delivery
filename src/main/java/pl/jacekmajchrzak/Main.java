@@ -10,14 +10,8 @@ import java.util.Map;
 
 public class Main {
 
-    static Map<String, String> reservations = new HashMap<String, String>() {{
-        put("saturday", "No reservation");
-        put("sunday", "No reservation");
-    }};
-    
     static Map<String, STATE> features = new HashMap<String, STATE>() {{
-        put("EXAMPLE", STATE.ON);
-        put("EXAMPLE2", STATE.ON);
+        put("PRICE", STATE.OFF);
     }};
 
     public static void main(String[] args) {
@@ -26,11 +20,6 @@ public class Main {
             .port(7070)
             .enableStaticFiles("/public")
             .start();
-
-        app.post("/post-form", ctx -> {
-            reservations.put(ctx.formParam("day"), ctx.formParam("time"));
-            ctx.html("Your reservation has been saved");
-        });
     
         app.get("/features", ctx -> {
             ctx.json(features);
@@ -40,6 +29,14 @@ public class Main {
             TurnFeatureRequest turnFeatureRequest = ctx.bodyAsClass(TurnFeatureRequest.class);
             String featureToChange = ctx.pathParam("key");
             features.replace(featureToChange, turnFeatureRequest.getTurnToState());
+        });
+    
+        app.post("/calculate", ctx -> {
+            final String price = ctx.formParam("price");
+            final String count = ctx.formParam("count");
+            final String state = ctx.formParam("state");
+            final double totalPrice = 10.0;
+            ctx.json(totalPrice);
         });
 
     }

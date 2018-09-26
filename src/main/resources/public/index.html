@@ -1,21 +1,22 @@
-<h1>Hello in Elephant Delivery Exercise!</h1>
-
-<form id="form-example" method="post" action="/post-form">
-    Choose day
-    <select name="day">
-        <option value="saturday">Saturday</option>
-        <option value="sunday">Sunday</option>
-    </select>
+<div id="calculate">
+    <form id="retail-form" method="post" action="/calculate">
+        Price:
+        <input type="text" name="price">
+        <br>
+        Count:
+        <input type="text" name="count">
+        <br>
+        State:
+        <select name="state">
+            <option value="UT">UT</option>
+        </select>
+        <br>
+        <button>Submit</button>
+    </form>
     <br>
-    Choose time
-    <select name="time">
-        <option value="8:00 PM">8:00 PM</option>
-        <option value="9:00 PM">9:00 PM</option>
-    </select>
-    <br>
-    <button>Submit</button>
-</form>
-
+    Result:
+    <input id="result">
+</div>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -27,7 +28,7 @@
         margin: 5px 0;
     }
 
-    #form-example {
+    #calculate {
         display: none;
     }
 
@@ -39,19 +40,50 @@
 
 <script>
     window.addEventListener('load', function () {
-        var url  = "http://localhost:7070/features";
-        var xhr  = new XMLHttpRequest()
+        function sendData() {
+            var XHR = new XMLHttpRequest();
+
+            // Bind the FormData object and the form element
+            var FD = new FormData(form);
+
+            // Define what happens on successful data submission
+            XHR.addEventListener("load", function (event) {
+                var total = JSON.parse(XHR.responseText);
+                document.getElementById("result").value = total;
+            });
+
+            // Define what happens in case of error
+            XHR.addEventListener("error", function (event) {
+                alert('Oops! Something went wrong.');
+            });
+
+            // Set up our request
+            var url = "http://localhost:7070/calculate";
+            XHR.open("POST", url, true);
+
+            // The data sent is what the user provided in the form
+            XHR.send(FD);
+        }
+
+        // Access the form element...
+        var form = document.getElementById("retail-form");
+
+        // ...and take over its submit event.
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            sendData();
+        });
+
+        // Features logic
+
+        var url = "http://localhost:7070/features";
+        var xhr = new XMLHttpRequest()
         xhr.open('GET', url, true)
         xhr.onload = function () {
             var features = JSON.parse(xhr.responseText);
-            if (xhr.readyState == 4 && xhr.status == "200") {
-                console.table(features);
-            } else {
-                console.error(features);
-            }
-            if(features["EXAMPLE"] === "ON"){
-                var formExample = document.getElementById("form-example");
-                formExample.style.display = 'block';
+            if (features[ "PRICE" ] === "ON") {
+                var calculate = document.getElementById("calculate");
+                calculate.style.display = 'block';
             }
         }
         xhr.send(null);
